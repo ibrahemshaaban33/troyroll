@@ -631,4 +631,107 @@
             const totalBets = items.reduce((sum, item) => sum + item.bet, 0);
             if (totalBets === 0) {
                 if (balance >= currentChip) {
-                    balance -= currentChi
+                    balance -= currentChip;
+                    balanceEl.textContent = balance;
+                    items[activeIndex].bet = currentChip;
+                    renderWheel();
+                } else {
+                    showToast('اختر طعاماً للرهان أو اشحن الرصيد!');
+                    resetTimer();
+                    return;
+                }
+            }
+
+            clearInterval(timerInterval);
+            isSpinning = true;
+            centerHub.textContent = 'جاري..';
+            timerText.textContent = 'حظاً موفقاً! العجلة تدور...';
+
+            const totalSteps = 3 * items.length + Math.floor(Math.random() * items.length);
+            let speed = 45;
+            let currentStep = 0;
+
+            function spinStep() {
+                activeIndex = (activeIndex + 1) % items.length;
+                renderWheel();
+                currentStep++;
+
+                if (currentStep < totalSteps) {
+                    // تباطؤ تدريجي واقعي قبل التوقف
+                    if (currentStep > totalSteps - 10) {
+                        speed += 28;
+                    } else {
+                        speed += 4;
+                    }
+                    setTimeout(spinStep, speed);
+                } else {
+                    finishSpin();
+                }
+            }
+
+            spinStep();
+        }
+
+        // إنهاء الدوران وحساب الأرباح
+        function finishSpin() {
+            isSpinning = false;
+            centerHub.textContent = 'ابدأ';
+            const winningItem = items[activeIndex];
+            const winAmount = winningItem.bet * winningItem.multiplier;
+
+            modalIcon.textContent = winningItem.icon;
+            if (winAmount > 0) {
+                balance += winAmount;
+                balanceEl.textContent = balance;
+                modalTitle.textContent = `رائع، لقد فزت بـ ${winningItem.name}!`;
+                modalMessage.innerHTML = `مضاعف الربح: <b>X${winningItem.multiplier}</b><br>مكافأة الجولة: <span style="color:#ffd700; font-weight:bold;">+${winAmount} 🪙</span>`;
+            } else {
+                modalTitle.textContent = `نتيجة الجولة: ${winningItem.name}`;
+                modalMessage.innerHTML = `للأسف لم تراهن على ${winningItem.name} هذه المرة.<br>حاول مرة أخرى في الجولة القادمة!`;
+            }
+
+            // تصفير الرهانات للجولة الجديدة
+            items.forEach(item => item.bet = 0);
+            renderWheel();
+
+            // إضافة النتيجة لشريط السجل
+            const histItem = document.createElement('div');
+            histItem.className = 'history-item';
+            histItem.textContent = winningItem.icon;
+            historyBar.prepend(histItem);
+            if (historyBar.children.length > 7) historyBar.lastChild.remove();
+
+            resultModal.classList.add('show');
+            resetTimer();
+        }
+
+        function closeModal() {
+            resultModal.classList.remove('show');
+        }
+
+        // العداد التنازلي
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 15;
+            timerText.textContent = `برجاء الاختيار: ${timeLeft}s`;
+            timerInterval = setInterval(() => {
+                if (isSpinning) return;
+                timeLeft--;
+                timerText.textContent = `برجاء الاختيار: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    startSpin();
+                }
+            }, 1000);
+        }
+
+        centerHub.onclick = startSpin;
+
+        // تهيئة اللعبة عند التحميل
+        window.onload = function() {
+            renderWheel();
+            resetTimer();
+        };
+    </script>
+</body>
+</html>
