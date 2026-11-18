@@ -23,7 +23,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 12px;
+            padding: 10px 12px;
             overflow-x: hidden;
         }
 
@@ -36,7 +36,7 @@
             align-items: center;
             background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(8px);
-            padding: 10px 16px;
+            padding: 8px 14px;
             border-radius: 16px;
             border: 1px solid rgba(255, 215, 0, 0.25);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -49,8 +49,8 @@
         }
 
         .avatar {
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             border: 2px solid #ffd700;
             background: linear-gradient(135deg, #2a3b5c, #121a2f);
@@ -58,19 +58,19 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #ffd700;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
         .balance-badge {
             background: rgba(0, 0, 0, 0.5);
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 20px;
             border: 1px solid #ffd700;
             color: #ffd700;
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -100,27 +100,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
             margin: auto 0;
-        }
-
-        .timer-box {
-            background: linear-gradient(135deg, #ffd700, #b8860b);
-            color: #0b132b;
-            padding: 7px 26px;
-            border-radius: 25px;
-            font-weight: 800;
-            font-size: 1rem;
-            box-shadow: 0 0 18px rgba(255, 215, 0, 0.45);
-            text-align: center;
-            letter-spacing: 0.5px;
         }
 
         /* عجلة الروليت الدائرية */
         .wheel-outer {
             position: relative;
-            width: 330px;
-            height: 330px;
+            width: 334px;
+            height: 334px;
             border-radius: 50%;
             background: radial-gradient(circle, #223259 0%, #0f1930 100%);
             border: 6px solid #d4af37;
@@ -128,16 +116,35 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-top: 8px;
         }
 
-        /* خطوط الزينة الداخلية للعجلة */
+        /* أشعة العجلة الذهبية */
+        .wheel-spokes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .spoke {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 115px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.7), rgba(255, 215, 0, 0.15));
+            transform-origin: 0% 50%;
+        }
+
         .wheel-outer::before {
             content: '';
             position: absolute;
-            width: 210px;
-            height: 210px;
+            width: 215px;
+            height: 215px;
             border-radius: 50%;
-            border: 2px dashed rgba(255, 215, 0, 0.25);
+            border: 2px solid rgba(255, 215, 0, 0.25);
             pointer-events: none;
         }
 
@@ -153,8 +160,8 @@
             position: absolute;
             width: 68px;
             height: 68px;
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
-            border: 2px solid rgba(255, 215, 0, 0.35);
+            background: linear-gradient(145deg, rgba(30, 45, 80, 0.92), rgba(15, 24, 48, 0.95));
+            border: 2px solid #d4af37;
             border-radius: 14px;
             display: flex;
             flex-direction: column;
@@ -162,11 +169,12 @@
             justify-content: center;
             font-size: 1.55rem;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
         }
 
         .wheel-item:active {
-            transform: scale(0.95);
+            transform: scale(0.94);
         }
 
         .wheel-item .mult {
@@ -176,19 +184,36 @@
             margin-top: 1px;
         }
 
+        /* شارة HOT على الأصناف الرائجة */
+        .hot-badge {
+            position: absolute;
+            bottom: 14px;
+            font-size: 0.55rem;
+            font-weight: 900;
+            padding: 1px 5px;
+            border-radius: 6px;
+            color: #fff;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+
+        .hot-1 { background: linear-gradient(90deg, #ff4757, #ff6b81); }
+        .hot-2 { background: linear-gradient(90deg, #2ed573, #1e90ff); }
+        .hot-3 { background: linear-gradient(90deg, #ffa502, #ff6348); }
+
         /* شارة الرهان الموضوع على الصنف */
         .bet-badge {
             position: absolute;
-            top: -8px;
-            left: -8px;
+            top: -9px;
+            left: -6px;
             background: linear-gradient(135deg, #ffd700, #ff9f1a);
             color: #000;
             font-size: 0.68rem;
             font-weight: 900;
-            padding: 2px 6px;
+            padding: 1px 6px;
             border-radius: 10px;
-            border: 1px solid #fff;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+            border: 1.5px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.7);
             display: none;
             z-index: 12;
         }
@@ -207,120 +232,211 @@
         /* المؤشر المضيء أثناء الدوران */
         .wheel-item.active {
             border-color: #ff4757;
-            background: rgba(255, 71, 87, 0.35);
-            box-shadow: 0 0 22px #ff4757, inset 0 0 10px rgba(255, 71, 87, 0.6);
-            transform: scale(1.12);
+            background: rgba(255, 71, 87, 0.38);
+            box-shadow: 0 0 24px #ff4757, inset 0 0 12px rgba(255, 71, 87, 0.7);
+            transform: scale(1.13);
             z-index: 10;
         }
 
-        /* زر التشغيل في المنتصف */
+        /* المحور المركزي للعجلة مع العداد التلقائي */
         .center-hub {
-            width: 84px;
-            height: 84px;
+            width: 96px;
+            height: 96px;
             background: radial-gradient(circle, #ffe066 0%, #d4af37 65%, #996515 100%);
             border-radius: 50%;
             border: 4px solid #fff;
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            box-shadow: 0 0 28px rgba(255, 215, 0, 0.75);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-weight: 900;
             color: #0b132b;
-            font-size: 1.15rem;
-            cursor: pointer;
             z-index: 15;
-            transition: transform 0.2s, box-shadow 0.2s;
+            pointer-events: none;
+            text-align: center;
+            padding: 4px;
         }
 
-        .center-hub:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 32px rgba(255, 215, 0, 0.9);
+        .hub-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: #2c1e05;
         }
 
-        .center-hub:active {
+        .hub-timer {
+            font-size: 1.35rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-top: 2px;
+        }
+
+        /* أزرار الرهان الجماعي السريع (سلطة فواكه واللحوميات) */
+        .group-bets-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 2px;
+        }
+
+        .group-card {
+            flex: 1;
+            background: linear-gradient(145deg, rgba(30, 48, 86, 0.9), rgba(16, 27, 54, 0.95));
+            border: 1.5px solid rgba(255, 215, 0, 0.55);
+            border-radius: 14px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .group-card:active {
             transform: scale(0.96);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .group-card.fruits {
+            border-color: #2ed573;
+            background: linear-gradient(135deg, rgba(46, 213, 115, 0.18), rgba(16, 27, 54, 0.95));
+        }
+
+        .group-card.meats {
+            border-color: #ff6b81;
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.18), rgba(16, 27, 54, 0.95));
+        }
+
+        .group-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .group-title {
+            font-size: 0.85rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .group-sub {
+            font-size: 0.65rem;
+            color: #ffd700;
+            font-weight: 700;
+        }
+
+        .group-icons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            font-size: 0.95rem;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 4px;
+            border-radius: 8px;
         }
 
         /* قسم الرهانات والرقائق */
         .betting-section {
             width: 100%;
-            background: rgba(0, 0, 0, 0.35);
+            background: rgba(0, 0, 0, 0.38);
             border-radius: 16px;
-            padding: 12px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 10px 12px;
+            border: 1px solid rgba(255, 215, 0, 0.25);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .bet-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #ffd700;
-            padding: 0 4px;
         }
 
         .clear-btn {
-            background: rgba(255, 71, 87, 0.2);
+            background: rgba(255, 71, 87, 0.22);
             color: #ff6b81;
-            border: 1px solid rgba(255, 71, 87, 0.4);
-            padding: 3px 10px;
+            border: 1px solid rgba(255, 71, 87, 0.45);
+            padding: 2px 10px;
             border-radius: 12px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             cursor: pointer;
             font-weight: bold;
         }
 
         .chips-row {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
+            align-items: center;
             gap: 6px;
         }
 
         .chip {
             background: linear-gradient(145deg, #2f3640, #1e272e);
-            border: 2px dashed #888;
+            border: 2px dashed #aaa;
             border-radius: 50%;
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.78rem;
-            font-weight: 800;
+            font-size: 0.76rem;
+            font-weight: 900;
             cursor: pointer;
             transition: all 0.2s ease;
             color: #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.45);
         }
 
         .chip.selected {
             border: 2px solid #fff;
             box-shadow: 0 0 15px #ffd700;
-            transform: translateY(-4px) scale(1.08);
+            transform: translateY(-3px) scale(1.08);
             background: radial-gradient(circle, #ffd700, #b8860b);
             color: #000;
+        }
+
+        .repeat-btn {
+            background: linear-gradient(135deg, #2b4c7e, #182c4d);
+            border: 1.5px solid #ffd700;
+            color: #ffd700;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+        }
+
+        .repeat-btn:active {
+            transform: scale(0.95);
         }
 
         /* شريط السجل السفلي */
         .history-wrapper {
             width: 100%;
             max-width: 440px;
-            background: rgba(0, 0, 0, 0.35);
-            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.38);
+            padding: 7px 12px;
             border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .history-label {
-            font-size: 0.78rem;
-            color: #aaa;
+            font-size: 0.76rem;
+            color: #cbd5e1;
+            font-weight: bold;
             white-space: nowrap;
         }
 
@@ -332,6 +448,7 @@
         }
 
         .history-item {
+            position: relative;
             min-width: 32px;
             height: 32px;
             background: rgba(255, 255, 255, 0.1);
@@ -345,13 +462,13 @@
 
         .history-item:first-child {
             border-color: #ff4757;
-            box-shadow: 0 0 8px rgba(255, 71, 87, 0.5);
+            box-shadow: 0 0 8px rgba(255, 71, 87, 0.6);
         }
 
         /* إشعار سريع بدل alert */
         .toast {
             position: fixed;
-            top: 75px;
+            top: 68px;
             background: rgba(255, 71, 87, 0.95);
             color: #fff;
             padding: 8px 18px;
@@ -397,7 +514,7 @@
         .modal-content {
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 2px solid #ffd700;
-            padding: 25px 20px;
+            padding: 24px 20px;
             border-radius: 22px;
             text-align: center;
             width: 85%;
@@ -420,12 +537,12 @@
         .modal-content h2 {
             color: #ffd700;
             margin-bottom: 10px;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
         }
 
         .modal-content p {
-            margin-bottom: 20px;
-            font-size: 1rem;
+            margin-bottom: 18px;
+            font-size: 0.98rem;
             line-height: 1.5;
             color: #e2e8f0;
         }
@@ -434,11 +551,11 @@
             background: linear-gradient(135deg, #ffd700, #d4af37);
             color: #0b132b;
             border: none;
-            padding: 10px 30px;
+            padding: 9px 28px;
             font-weight: 900;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
         }
     </style>
@@ -460,32 +577,61 @@
         <div class="balance-badge">
             <span>🪙</span>
             <span id="balance">1000</span>
-            <button class="add-coins-btn" onclick="addFreeCoins()" title="شحن رصيد تجريبي">+</button>
+            <button class="add-coins-btn" onclick="addFreeCoins()" title="شحن رصيد مجاني">+</button>
         </div>
     </header>
 
     <!-- منطقة اللعب الرئيسية -->
     <div class="game-container">
-        <div class="timer-box" id="timerText">برجاء الاختيار: 15s</div>
-
         <!-- العجلة الدائرية -->
         <div class="wheel-outer">
+            <div class="wheel-spokes" id="wheelSpokes"></div>
             <div class="wheel-grid" id="wheelGrid"></div>
-            <div class="center-hub" id="centerHub">ابدأ</div>
+            <div class="center-hub" id="centerHub">
+                <span class="hub-label" id="hubLabel">يرجى الاختيار</span>
+                <span class="hub-timer" id="hubTimer">30s</span>
+            </div>
         </div>
 
-        <!-- لوحة الرهانات -->
+        <!-- أزرار المجموعات: سلطة فواكه (يمين) واللحوميات (يسار) -->
+        <div class="group-bets-row">
+            <div class="group-card fruits" onclick="placeGroupBet([0, 1, 2, 3], 'سلطة فواكه')">
+                <div class="group-info">
+                    <span class="group-title">سلطة فواكه</span>
+                    <span class="group-sub" id="fruitCost">4 أصناف × 20</span>
+                </div>
+                <div class="group-icons">
+                    <span>🍉</span><span>🍊</span>
+                    <span>🍎</span><span>🥗</span>
+                </div>
+            </div>
+
+            <div class="group-card meats" onclick="placeGroupBet([4, 5, 6, 7], 'اللحوميات')">
+                <div class="group-info">
+                    <span class="group-title">اللحوميات</span>
+                    <span class="group-sub" id="meatCost">4 أصناف × 20</span>
+                </div>
+                <div class="group-icons">
+                    <span>🍗</span><span>🦐</span>
+                    <span>🍔</span><span>🐟</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- لوحة الرهانات والرقائق -->
         <div class="betting-section">
             <div class="bet-header">
-                <span>اختر الرقاقة ثم اضغط على الطعام:</span>
-                <button class="clear-btn" onclick="clearBets()">مسح الرهان</button>
+                <span>اختر الرقاقة ثم اضغط على الطعام أو المجموعة:</span>
+                <button class="clear-btn" onclick="clearBets()">مسح</button>
             </div>
             <div class="chips-row">
-                <div class="chip selected" onclick="setBet(10, this)">10</div>
-                <div class="chip" onclick="setBet(50, this)">50</div>
+                <div class="chip selected" onclick="setBet(20, this)">20</div>
                 <div class="chip" onclick="setBet(100, this)">100</div>
-                <div class="chip" onclick="setBet(500, this)">500</div>
                 <div class="chip" onclick="setBet(1000, this)">1000</div>
+                <div class="chip" onclick="setBet(5000, this)">5000</div>
+                <button class="repeat-btn" onclick="repeatLastBet()">
+                    <span>🔄 التكرار</span>
+                </button>
             </div>
         </div>
     </div>
@@ -514,19 +660,19 @@
     </div>
 
     <script>
-        // تعريف أصناف الطعام الثمانية ومضاعفاتها ونسب احتمالية ظهورها (المجموع 100%)
+        // تعريف أصناف الطعام الثمانية بترتيب عقارب الساعة (تبدأ من الأعلى 12:00) ونسب الاحتمالات
         const items = [
-            { name: 'بطيخ', icon: '🍉', multiplier: 5, probability: 19.4, bet: 0 },
-            { name: 'برتقال', icon: '🍊', multiplier: 5, probability: 19.4, bet: 0 },
-            { name: 'تفاح', icon: '🍎', multiplier: 5, probability: 19.4, bet: 0 },
-            { name: 'خضروات', icon: '🥗', multiplier: 5, probability: 19.4, bet: 0 },
-            { name: 'سمك', icon: '🐟', multiplier: 10, probability: 9.5, bet: 0 },
-            { name: 'هامبرجر', icon: '🍔', multiplier: 15, probability: 7.0, bet: 0 },
-            { name: 'جمبري', icon: '🦐', multiplier: 25, probability: 3.8, bet: 0 },
-            { name: 'دجاج', icon: '🍗', multiplier: 45, probability: 2.1, bet: 0 }
+            { name: 'بطيخ', icon: '🍉', multiplier: 5, probability: 19.4, hot: 'HOT 1', hotClass: 'hot-1', bet: 0 },
+            { name: 'برتقال', icon: '🍊', multiplier: 5, probability: 19.4, hot: 'HOT 3', hotClass: 'hot-3', bet: 0 },
+            { name: 'تفاح', icon: '🍎', multiplier: 5, probability: 19.4, hot: '', hotClass: '', bet: 0 },
+            { name: 'خضروات', icon: '🥗', multiplier: 5, probability: 19.4, hot: 'HOT 2', hotClass: 'hot-2', bet: 0 },
+            { name: 'سمك', icon: '🐟', multiplier: 10, probability: 9.5, hot: '', hotClass: '', bet: 0 },
+            { name: 'هامبرجر', icon: '🍔', multiplier: 15, probability: 7.0, hot: '', hotClass: '', bet: 0 },
+            { name: 'جمبري', icon: '🦐', multiplier: 25, probability: 3.8, hot: '', hotClass: '', bet: 0 },
+            { name: 'دجاج', icon: '🍗', multiplier: 45, probability: 2.1, hot: '', hotClass: '', bet: 0 }
         ];
 
-        // اختيار الفائز بناءً على الاحتمالات الموزونة
+        // اختيار الفائز بناءً على الاحتمالات الموزونة بدقة
         function getWeightedWinnerIndex() {
             const rand = Math.random() * 100;
             let cumulative = 0;
@@ -540,22 +686,37 @@
         }
 
         let balance = 1000;
-        let currentChip = 10;
+        let currentChip = 20;
         let isSpinning = false;
         let activeIndex = 0;
-        let timeLeft = 15;
+        let timeLeft = 30;
         let timerInterval;
+        let modalTimeout;
+        let lastRoundBets = [0, 0, 0, 0, 0, 0, 0, 0];
 
         const wheelGrid = document.getElementById('wheelGrid');
-        const centerHub = document.getElementById('centerHub');
+        const wheelSpokes = document.getElementById('wheelSpokes');
+        const hubLabel = document.getElementById('hubLabel');
+        const hubTimer = document.getElementById('hubTimer');
         const balanceEl = document.getElementById('balance');
-        const timerText = document.getElementById('timerText');
         const resultModal = document.getElementById('resultModal');
         const modalIcon = document.getElementById('modalIcon');
         const modalTitle = document.getElementById('modalTitle');
         const modalMessage = document.getElementById('modalMessage');
         const historyBar = document.getElementById('historyBar');
         const toastMsg = document.getElementById('toastMsg');
+
+        // رسم أشعة العجلة الذهبية الثمانية
+        function renderSpokes() {
+            wheelSpokes.innerHTML = '';
+            for (let i = 0; i < items.length; i++) {
+                const deg = i * (360 / items.length) - 90;
+                const spoke = document.createElement('div');
+                spoke.className = 'spoke';
+                spoke.style.transform = `rotate(${deg}deg)`;
+                wheelSpokes.appendChild(spoke);
+            }
+        }
 
         // دالة إظهار التنبيهات السريعة
         function showToast(msg) {
@@ -568,15 +729,15 @@
         function addFreeCoins() {
             balance += 1000;
             balanceEl.textContent = balance;
-            showToast('تم إضافة +1000 عملة مجانية للتجربة!');
+            showToast('تم إضافة +1000 عملة مجانية!');
         }
 
         // رسم عناصر العجلة في مسار دائري
         function renderWheel() {
             wheelGrid.innerHTML = '';
-            const radius = 112;
-            const centerX = 159;
-            const centerY = 159;
+            const radius = 114;
+            const centerX = 161;
+            const centerY = 161;
             const itemSize = 68;
 
             items.forEach((item, index) => {
@@ -590,24 +751,29 @@
                 div.style.top = `${y}px`;
                 div.onclick = () => placeBetOnItem(index);
 
+                const hotHtml = item.hot ? `<div class="hot-badge ${item.hotClass}">${item.hot}</div>` : '';
+
                 div.innerHTML = `
                     <div class="bet-badge ${item.bet > 0 ? 'visible' : ''}">${item.bet}</div>
                     <div>${item.icon}</div>
+                    ${hotHtml}
                     <span class="mult">X${item.multiplier}</span>
                 `;
                 wheelGrid.appendChild(div);
             });
         }
 
-        // اختيار قيمة الرقاقة
+        // اختيار قيمة الرقاقة وتحديث تكلفة المجموعات
         function setBet(amount, element) {
             if (isSpinning) return;
             currentChip = amount;
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
             element.classList.add('selected');
+            document.getElementById('fruitCost').textContent = `4 أصناف × ${currentChip}`;
+            document.getElementById('meatCost').textContent = `4 أصناف × ${currentChip}`;
         }
 
-        // وضع رهان على صنف معين عند الضغط عليه
+        // وضع رهان على صنف واحد
         function placeBetOnItem(index) {
             if (isSpinning) return;
             if (balance < currentChip) {
@@ -618,6 +784,43 @@
             balanceEl.textContent = balance;
             items[index].bet += currentChip;
             renderWheel();
+        }
+
+        // وضع رهان جماعي على مجموعة (سلطة فواكه أو اللحوميات)
+        function placeGroupBet(indices, groupName) {
+            if (isSpinning) return;
+            const totalCost = currentChip * indices.length;
+            if (balance < totalCost) {
+                showToast(`رصيدك غير كافٍ لرهان ${groupName} (${totalCost} عملة)!`);
+                return;
+            }
+            balance -= totalCost;
+            balanceEl.textContent = balance;
+            indices.forEach(idx => {
+                items[idx].bet += currentChip;
+            });
+            renderWheel();
+        }
+
+        // تكرار رهان الجولة السابقة
+        function repeatLastBet() {
+            if (isSpinning) return;
+            const totalNeeded = lastRoundBets.reduce((sum, val) => sum + val, 0);
+            if (totalNeeded === 0) {
+                showToast('لا يوجد رهان سابق لتكراره');
+                return;
+            }
+            if (balance < totalNeeded) {
+                showToast('رصيدك غير كافٍ لتكرار الرهان السابق!');
+                return;
+            }
+            balance -= totalNeeded;
+            balanceEl.textContent = balance;
+            items.forEach((item, i) => {
+                item.bet += lastRoundBets[i];
+            });
+            renderWheel();
+            showToast('تم تكرار الرهان السابق!');
         }
 
         // مسح جميع الرهانات واسترجاع الرصيد
@@ -636,33 +839,25 @@
             }
         }
 
-        // بدء دوران العجلة
+        // بدء دوران العجلة تلقائياً
         function startSpin() {
             if (isSpinning) return;
-            
-            // إذا لم يضع اللاعب أي رهان، يضع رهان تلقائي على الصنف الحالي
-            const totalBets = items.reduce((sum, item) => sum + item.bet, 0);
-            if (totalBets === 0) {
-                if (balance >= currentChip) {
-                    balance -= currentChip;
-                    balanceEl.textContent = balance;
-                    items[activeIndex].bet = currentChip;
-                    renderWheel();
-                } else {
-                    showToast('اختر طعاماً للرهان أو اشحن الرصيد!');
-                    resetTimer();
-                    return;
-                }
-            }
 
             clearInterval(timerInterval);
+            closeModal();
             isSpinning = true;
-            centerHub.textContent = 'جاري..';
-            timerText.textContent = 'حظاً موفقاً! العجلة تدور...';
+            hubLabel.textContent = 'جاري السحب';
+            hubTimer.textContent = '👑';
 
-            // تحديد الفائز مسبقاً حسب الاحتمالات وحساب عدد الخطوات بدقة للوقوف عليه
+            // حفظ رهانات هذه الجولة لاستخدامها في زر التكرار
+            const currentTotal = items.reduce((sum, item) => sum + item.bet, 0);
+            if (currentTotal > 0) {
+                lastRoundBets = items.map(item => item.bet);
+            }
+
+            // تحديد الفائز مسبقاً حسب الاحتمالات الموزونة
             const winningIndex = getWeightedWinnerIndex();
-            const fullRotations = 3 + Math.floor(Math.random() * 2); // 3 إلى 4 دورات كاملة
+            const fullRotations = 3 + Math.floor(Math.random() * 2);
             const stepsToTarget = (winningIndex - activeIndex + items.length) % items.length;
             const totalSteps = (fullRotations * items.length) + stepsToTarget;
 
@@ -675,7 +870,6 @@
                     renderWheel();
                     currentStep++;
 
-                    // تباطؤ تدريجي واقعي قبل التوقف عند الهدف
                     if (currentStep > totalSteps - 10) {
                         speed += 28;
                     } else {
@@ -693,8 +887,8 @@
         // إنهاء الدوران وحساب الأرباح
         function finishSpin() {
             isSpinning = false;
-            centerHub.textContent = 'ابدأ';
             const winningItem = items[activeIndex];
+            const totalBets = items.reduce((sum, item) => sum + item.bet, 0);
             const winAmount = winningItem.bet * winningItem.multiplier;
 
             modalIcon.textContent = winningItem.icon;
@@ -703,9 +897,12 @@
                 balanceEl.textContent = balance;
                 modalTitle.textContent = `رائع، لقد فزت بـ ${winningItem.name}!`;
                 modalMessage.innerHTML = `مضاعف الربح: <b>X${winningItem.multiplier}</b><br>مكافأة الجولة: <span style="color:#ffd700; font-weight:bold;">+${winAmount} 🪙</span>`;
-            } else {
+            } else if (totalBets > 0) {
                 modalTitle.textContent = `نتيجة الجولة: ${winningItem.name}`;
                 modalMessage.innerHTML = `للأسف لم تراهن على ${winningItem.name} هذه المرة.<br>حاول مرة أخرى في الجولة القادمة!`;
+            } else {
+                modalTitle.textContent = `نتيجة الجولة: ${winningItem.name}`;
+                modalMessage.innerHTML = `لم تضع أي رهان في هذه الجولة.<br>اختر طعامك في الجولة القادمة!`;
             }
 
             // تصفير الرهانات للجولة الجديدة
@@ -720,22 +917,26 @@
             if (historyBar.children.length > 7) historyBar.lastChild.remove();
 
             resultModal.classList.add('show');
+            clearTimeout(modalTimeout);
+            modalTimeout = setTimeout(closeModal, 3500);
             resetTimer();
         }
 
         function closeModal() {
+            clearTimeout(modalTimeout);
             resultModal.classList.remove('show');
         }
 
-        // العداد التنازلي
+        // العداد التنازلي التلقائي (30 ثانية)
         function resetTimer() {
             clearInterval(timerInterval);
-            timeLeft = 15;
-            timerText.textContent = `برجاء الاختيار: ${timeLeft}s`;
+            timeLeft = 30;
+            hubLabel.textContent = 'يرجى الاختيار';
+            hubTimer.textContent = `${timeLeft}s`;
             timerInterval = setInterval(() => {
                 if (isSpinning) return;
                 timeLeft--;
-                timerText.textContent = `برجاء الاختيار: ${timeLeft}s`;
+                hubTimer.textContent = `${timeLeft}s`;
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     startSpin();
@@ -743,10 +944,9 @@
             }, 1000);
         }
 
-        centerHub.onclick = startSpin;
-
         // تهيئة اللعبة عند التحميل
         window.onload = function() {
+            renderSpokes();
             renderWheel();
             resetTimer();
         };
