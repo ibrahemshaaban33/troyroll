@@ -514,17 +514,30 @@
     </div>
 
     <script>
-        // تعريف أصناف الطعام الثمانية ومضاعفاتها
+        // تعريف أصناف الطعام الثمانية ومضاعفاتها ونسب احتمالية ظهورها (المجموع 100%)
         const items = [
-            { name: 'بطيخ', icon: '🍉', multiplier: 5, bet: 0 },
-            { name: 'برتقال', icon: '🍊', multiplier: 5, bet: 0 },
-            { name: 'تفاح', icon: '🍎', multiplier: 5, bet: 0 },
-            { name: 'خضروات', icon: '🥗', multiplier: 5, bet: 0 },
-            { name: 'سمك', icon: '🐟', multiplier: 10, bet: 0 },
-            { name: 'هامبرجر', icon: '🍔', multiplier: 15, bet: 0 },
-            { name: 'جمبري', icon: '🦐', multiplier: 25, bet: 0 },
-            { name: 'دجاج', icon: '🍗', multiplier: 45, bet: 0 }
+            { name: 'بطيخ', icon: '🍉', multiplier: 5, probability: 19.4, bet: 0 },
+            { name: 'برتقال', icon: '🍊', multiplier: 5, probability: 19.4, bet: 0 },
+            { name: 'تفاح', icon: '🍎', multiplier: 5, probability: 19.4, bet: 0 },
+            { name: 'خضروات', icon: '🥗', multiplier: 5, probability: 19.4, bet: 0 },
+            { name: 'سمك', icon: '🐟', multiplier: 10, probability: 9.5, bet: 0 },
+            { name: 'هامبرجر', icon: '🍔', multiplier: 15, probability: 7.0, bet: 0 },
+            { name: 'جمبري', icon: '🦐', multiplier: 25, probability: 3.8, bet: 0 },
+            { name: 'دجاج', icon: '🍗', multiplier: 45, probability: 2.1, bet: 0 }
         ];
+
+        // اختيار الفائز بناءً على الاحتمالات الموزونة
+        function getWeightedWinnerIndex() {
+            const rand = Math.random() * 100;
+            let cumulative = 0;
+            for (let i = 0; i < items.length; i++) {
+                cumulative += items[i].probability;
+                if (rand < cumulative) {
+                    return i;
+                }
+            }
+            return 0;
+        }
 
         let balance = 1000;
         let currentChip = 10;
@@ -647,17 +660,22 @@
             centerHub.textContent = 'جاري..';
             timerText.textContent = 'حظاً موفقاً! العجلة تدور...';
 
-            const totalSteps = 3 * items.length + Math.floor(Math.random() * items.length);
+            // تحديد الفائز مسبقاً حسب الاحتمالات وحساب عدد الخطوات بدقة للوقوف عليه
+            const winningIndex = getWeightedWinnerIndex();
+            const fullRotations = 3 + Math.floor(Math.random() * 2); // 3 إلى 4 دورات كاملة
+            const stepsToTarget = (winningIndex - activeIndex + items.length) % items.length;
+            const totalSteps = (fullRotations * items.length) + stepsToTarget;
+
             let speed = 45;
             let currentStep = 0;
 
             function spinStep() {
-                activeIndex = (activeIndex + 1) % items.length;
-                renderWheel();
-                currentStep++;
-
                 if (currentStep < totalSteps) {
-                    // تباطؤ تدريجي واقعي قبل التوقف
+                    activeIndex = (activeIndex + 1) % items.length;
+                    renderWheel();
+                    currentStep++;
+
+                    // تباطؤ تدريجي واقعي قبل التوقف عند الهدف
                     if (currentStep > totalSteps - 10) {
                         speed += 28;
                     } else {
