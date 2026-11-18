@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة روليت الأطعمة الفاخرة</title>
+    <style>
+        /* التنسيقات الأساسية والخطوط */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1b2845 0%, #0b132b 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            overflow-x: hidden;
+        }
+
+        /* الشريط العلوي (بيانات اللاعب والرصيد) */
+        header {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px);
+            padding: 10px 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #ffd700;
+            background: linear-gradient(135deg, #2a3b5c, #121a2f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .balance-badge {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: inset 0 0 8px rgba(255, 215, 0, 0.2);
+        }
+
+        .add-coins-btn {
+            background: #ffd700;
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            margin-right: 4px;
+        }
+
+        /* حاوية اللعبة الرئيسية */
+        .game-container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            margin: auto 0;
+        }
+
+        .timer-box {
+            background: linear-gradient(135deg, #ffd700, #b8860b);
+            color: #0b132b;
+            padding: 7px 26px;
+            border-radius: 25px;
+            font-weight: 800;
+            font-size: 1rem;
+            box-shadow: 0 0 18px rgba(255, 215, 0, 0.45);
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        /* عجلة الروليت الدائرية */
+        .wheel-outer {
+            position: relative;
+            width: 330px;
+            height: 330px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #223259 0%, #0f1930 100%);
+            border: 6px solid #d4af37;
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.35), inset 0 0 25px rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* خطوط الزينة الداخلية للعجلة */
+        .wheel-outer::before {
+            content: '';
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 215, 0, 0.25);
+            pointer-events: none;
+        }
+
+        .wheel-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        /* بطاقات الأطعمة على العجلة */
+        .wheel-item {
+            position: absolute;
+            width: 68px;
+            height: 68px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+            border: 2px solid rgba(255, 215, 0, 0.35);
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.55rem;
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .wheel-item:active {
+            transform: scale(0.95);
+        }
+
+        .wheel-item .mult {
+            font-size: 0.68rem;
+            color: #ffd700;
+            font-weight: 800;
+            margin-top: 1px;
+        }
+
+        /* شارة الرهان الموضوع على الصنف */
+        .bet-badge {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            background: linear-gradient(135deg, #ffd700, #ff9f1a);
+            color: #000;
+            font-size: 0.68rem;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 10px;
+            border: 1px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+            display: none;
+            z-index: 12;
+        }
+
+        .bet-badge.visible {
+            display: block;
+            animation: bounceIn 0.2s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); }
+            80% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* المؤشر المضيء أثناء الدوران */
+        .wheel-item.active {
+            border-color: #ff4757;
+            background: rgba(255, 71, 87, 0.35);
+            box-shadow: 0 0 22px #ff4757, inset 0 0 10px rgba(255, 71, 87, 0.6);
+            transform: scale(1.12);
+            z-index: 10;
+        }
+
+        /* زر التشغيل في المنتصف */
+        .center-hub {
+            width: 84px;
+            height: 84px;
+            background: radial-gradient(circle, #ffe066 0%, #d4af37 65%, #996515 100%);
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #0b132b;
+            font-size: 1.15rem;
+            cursor: pointer;
+            z-index: 15;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .center-hub:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 32px rgba(255, 215, 0, 0.9);
+        }
+
+        .center-hub:active {
+            transform: scale(0.96);
+        }
+
+        /* قسم الرهانات والرقائق */
+        .betting-section {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #ffd700;
+            padding: 0 4px;
+        }
+
+        .clear-btn {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff6b81;
+            border: 1px solid rgba(255, 71, 87, 0.4);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .chips-row {
+            display: flex;
+            justify-content: space-around;
+            gap: 6px;
+        }
+
+        .chip {
+            background: linear-gradient(145deg, #2f3640, #1e272e);
+            border: 2px dashed #888;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        .chip.selected {
+            border: 2px solid #fff;
+            box-shadow: 0 0 15px #ffd700;
+            transform: translateY(-4px) scale(1.08);
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            color: #000;
+        }
+
+        /* شريط السجل السفلي */
+        .history-wrapper {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 8px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .history-label {
+            font-size: 0.78rem;
+            color: #aaa;
+            white-space: nowrap;
+        }
+
+        .history-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            flex: 1;
+        }
+
+        .history-item {
+            min-width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .history-item:first-child {
+            border-color: #ff4757;
+            box-shadow: 0 0 8px rgba(255, 71, 87, 0.5);
+        }
+
+        /* إشعار سريع بدل alert */
+        .toast {
+            position: fixed;
+            top: 75px;
+            background: rgba(255, 71, 87, 0.95);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: 0.3s;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* نافذة النتيجة المنبثقة */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            z-index: 100;
+        }
+
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 2px solid #ffd700;
+            padding: 25px 20px;
+            border-radius: 22px;
+            text-align: center;
+            width: 85%;
+            max-width: 320px;
+            box-shadow: 0 0 35px rgba(255, 215, 0, 0.45);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.75); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon {
+            font-size: 3.5rem;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.5));
+        }
+
+        .modal-content h2 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .modal-content p {
+            margin-bottom: 20px;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, #ffd700, #d4af37);
+            color: #0b132b;
+            border: none;
+            padding: 10px 30px;
+            font-weight: 900;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- إشعار التنبيهات -->
+    <div class="toast" id="toastMsg">رصيدك غير كافٍ!</div>
+
+    <!-- الشريط العلوي -->
+    <header>
+        <div class="user-info">
+            <div class="avatar">T</div>
+            <div>
+                <div style="font-size: 0.9rem; font-weight: bold;">TROY ✨</div>
+                <div style="font-size: 0.68rem; color: #94a3b8;">ID: A886613</div>
+            </div>
+        </div>
+        <div class="balance-badge">
+            <span>🪙</span>
+            <span id="balance">1000</span>
+            <button class="add-coins-btn" onclick="addFreeCoins()" title="شحن رصيد تجريبي">+</button>
+        </div>
+    </header>
+
+    <!-- منطقة اللعب الرئيسية -->
+    <div class="game-container">
+        <div class="timer-box" id="timerText">برجاء الاختيار: 15s</div>
+
+        <!-- العجلة الدائرية -->
+        <div class="wheel-outer">
+            <div class="wheel-grid" id="wheelGrid"></div>
+            <div class="center-hub" id="centerHub">ابدأ</div>
+        </div>
+
+        <!-- لوحة الرهانات -->
+        <div class="betting-section">
+            <div class="bet-header">
+                <span>اختر الرقاقة ثم اضغط على الطعام:</span>
+                <button class="clear-btn" onclick="clearBets()">مسح الرهان</button>
+            </div>
+            <div class="chips-row">
+                <div class="chip selected" onclick="setBet(10, this)">10</div>
+                <div class="chip" onclick="setBet(50, this)">50</div>
+                <div class="chip" onclick="setBet(100, this)">100</div>
+                <div class="chip" onclick="setBet(500, this)">500</div>
+                <div class="chip" onclick="setBet(1000, this)">1000</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شريط سجل النتائج -->
+    <div class="history-wrapper">
+        <span class="history-label">سجل النتائج:</span>
+        <div class="history-bar" id="historyBar">
+            <div class="history-item">🍎</div>
+            <div class="history-item">🍊</div>
+            <div class="history-item">🐟</div>
+            <div class="history-item">🍔</div>
+            <div class="history-item">🍉</div>
+            <div class="history-item">🥗</div>
+        </div>
+    </div>
+
+    <!-- نافذة النتيجة -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">🍎</div>
+            <h2 id="modalTitle">نتيجة الجولة</h2>
+            <p id="modalMessage">رائع! لقد فزت!</p>
+            <button class="modal-btn" onclick="closeModal()">استمرار</button>
+        </div>
+    </div>
+
+    <script>
+        // تعريف أصناف الطعام الثمانية ومضاعفاتها
+        const items = [
+            { name: 'بطيخ', icon: '🍉', multiplier: 5, bet: 0 },
+            { name: 'برتقال', icon: '🍊', multiplier: 5, bet: 0 },
+            { name: 'تفاح', icon: '🍎', multiplier: 5, bet: 0 },
+            { name: 'خضروات', icon: '🥗', multiplier: 5, bet: 0 },
+            { name: 'سمك', icon: '🐟', multiplier: 10, bet: 0 },
+            { name: 'هامبرجر', icon: '🍔', multiplier: 15, bet: 0 },
+            { name: 'جمبري', icon: '🦐', multiplier: 25, bet: 0 },
+            { name: 'دجاج', icon: '🍗', multiplier: 45, bet: 0 }
+        ];
+
+        let balance = 1000;
+        let currentChip = 10;
+        let isSpinning = false;
+        let activeIndex = 0;
+        let timeLeft = 15;
+        let timerInterval;
+
+        const wheelGrid = document.getElementById('wheelGrid');
+        const centerHub = document.getElementById('centerHub');
+        const balanceEl = document.getElementById('balance');
+        const timerText = document.getElementById('timerText');
+        const resultModal = document.getElementById('resultModal');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const historyBar = document.getElementById('historyBar');
+        const toastMsg = document.getElementById('toastMsg');
+
+        // دالة إظهار التنبيهات السريعة
+        function showToast(msg) {
+            toastMsg.textContent = msg;
+            toastMsg.classList.add('show');
+            setTimeout(() => toastMsg.classList.remove('show'), 2000);
+        }
+
+        // إضافة رصيد مجاني للتجربة
+        function addFreeCoins() {
+            balance += 1000;
+            balanceEl.textContent = balance;
+            showToast('تم إضافة +1000 عملة مجانية للتجربة!');
+        }
+
+        // رسم عناصر العجلة في مسار دائري
+        function renderWheel() {
+            wheelGrid.innerHTML = '';
+            const radius = 112;
+            const centerX = 159;
+            const centerY = 159;
+            const itemSize = 68;
+
+            items.forEach((item, index) => {
+                const angle = (index * 2 * Math.PI) / items.length - Math.PI / 2;
+                const x = centerX + radius * Math.cos(angle) - itemSize / 2;
+                const y = centerY + radius * Math.sin(angle) - itemSize / 2;
+
+                const div = document.createElement('div');
+                div.className = `wheel-item ${index === activeIndex ? 'active' : ''}`;
+                div.style.left = `${x}px`;
+                div.style.top = `${y}px`;
+                div.onclick = () => placeBetOnItem(index);
+
+                div.innerHTML = `
+                    <div class="bet-badge ${item.bet > 0 ? 'visible' : ''}">${item.bet}</div>
+                    <div>${item.icon}</div>
+                    <span class="mult">X${item.multiplier}</span>
+                `;
+                wheelGrid.appendChild(div);
+            });
+        }
+
+        // اختيار قيمة الرقاقة
+        function setBet(amount, element) {
+            if (isSpinning) return;
+            currentChip = amount;
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        // وضع رهان على صنف معين عند الضغط عليه
+        function placeBetOnItem(index) {
+            if (isSpinning) return;
+            if (balance < currentChip) {
+                showToast('رصيدك غير كافٍ! اضغط على + لشحن الرصيد');
+                return;
+            }
+            balance -= currentChip;
+            balanceEl.textContent = balance;
+            items[index].bet += currentChip;
+            renderWheel();
+        }
+
+        // مسح جميع الرهانات واسترجاع الرصيد
+        function clearBets() {
+            if (isSpinning) return;
+            let refunded = 0;
+            items.forEach(item => {
+                refunded += item.bet;
+                item.bet = 0;
+            });
+            if (refunded > 0) {
+                balance += refunded;
+                balanceEl.textContent = balance;
+                renderWheel();
+                showToast('تم استرجاع الرهانات');
+            }
+        }
+
+        // بدء دوران العجلة
+        function startSpin() {
+            if (isSpinning) return;
+            
+            // إذا لم يضع اللاعب أي رهان، يضع رهان تلقائي على الصنف الحالي
+            const totalBets = items.reduce((sum, item) => sum + item.bet, 0);
+            if (totalBets === 0) {
+                if (balance >= currentChip) {
+                    balance -= currentChi
